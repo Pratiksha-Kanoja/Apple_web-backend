@@ -27,3 +27,25 @@ export const GetAllProducts =async(req,res)=>{
         return res.status(500).json({success:false,message:error})
     }
 }
+
+export const getSingleProduct = async(req, res) => {
+    try {
+        const {productId} =req.body;
+
+        if(!productId) return res.status(404).json({message:"ProductId required"})
+
+        const product = await ProductsModal.findById(productId)
+        //-_id means minus ka matalab id nahi chahiye and 
+
+        // const product = await ProductModal.findById(productId).select("name")
+        // name likhs means name print hoga
+
+        if(product){
+            return res.status(200).json({success:true,message:"Product found",product:product})
+        }
+        return res.status(404).json({success:false,message:"Product not found"})
+
+    } catch (error) {
+        return res.status(500).json({success:false,message:error})
+    }
+}
